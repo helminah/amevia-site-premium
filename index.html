@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMEVIA — Agence de Communication Digitale</title>
+<meta name="description" content="AMEVIA LLC — Agence de communication digitale full-service. Sites web premium, réseaux sociaux, Meta Ads, personal branding. Créer. Connecter. Marquer les esprits.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23080808'/><text x='16' y='24' text-anchor='middle' font-size='22' font-family='serif' font-weight='700' fill='%23C9A96E'>A</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* === RESET & BASE === */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--black:#080808;--black-light:#0e0e0e;--black-card:#111111;
+--gold:#C9A96E;--gold-light:#e8d5a8;--gold-dark:#8a6d3b;
+--cream:#F5F0E8;--cream-dim:rgba(245,240,232,.7);
+--font-display:'Cormorant Garamond',Georgia,serif;
+--font-body:'Inter',system-ui,sans-serif;
+--ease-out-expo:cubic-bezier(.16,1,.3,1);
+--ease-in-out:cubic-bezier(.65,0,.35,1);
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--black);color:var(--cream);font-family:var(--font-body);font-weight:300;line-height:1.7;overflow-x:hidden;cursor:none}
+::selection{background:var(--gold);color:var(--black)}
+img{max-width:100%;display:block}
+a{color:var(--gold);text-decoration:none;transition:color .3s}
+a:hover{color:var(--gold-light)}
+
+/* === CUSTOM CURSOR === */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:99999;border-radius:50%;mix-blend-mode:difference}
+.cursor-dot{width:6px;height:6px;background:var(--gold);transform:translate(-50%,-50%)}
+.cursor-ring{width:40px;height:40px;border:1.5px solid var(--gold);transform:translate(-50%,-50%);transition:width .3s var(--ease-out-expo),height .3s var(--ease-out-expo),border-color .3s}
+.cursor-ring.hover{width:60px;height:60px;border-color:var(--gold-light)}
+@media(max-width:768px){.cursor-dot,.cursor-ring{display:none}body{cursor:auto}}
+
+/* === LOADER === */
+.loader{position:fixed;inset:0;background:var(--black);z-index:100000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px}
+.loader-logo{opacity:0;transform:translateY(20px)}
+.loader-bar{width:120px;height:2px;background:rgba(201,169,110,.15);border-radius:2px;overflow:hidden}
+.loader-bar-inner{width:0;height:100%;background:var(--gold);border-radius:2px}
+
+/* === NAVBAR === */
+.navbar{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:24px 48px;display:flex;align-items:center;justify-content:space-between;transition:all .5s var(--ease-out-expo)}
+.navbar.scrolled{background:rgba(8,8,8,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:16px 48px;border-bottom:1px solid rgba(201,169,110,.08)}
+.nav-logo{display:flex;align-items:center;gap:12px}
+.nav-logo svg{height:36px;width:auto}
+.nav-logo-text{font-family:var(--font-display);font-size:18px;letter-spacing:.3em;color:var(--gold);font-weight:500}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream-dim);transition:color .3s;font-weight:400;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .4s var(--ease-out-expo)}
+.nav-links a:hover{color:var(--gold)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{font-size:12px!important;letter-spacing:.1em!important;padding:10px 24px;border:1px solid var(--gold);color:var(--gold)!important;transition:all .4s var(--ease-out-expo)!important}
+.nav-cta:hover{background:var(--gold);color:var(--black)!important}
+.nav-cta::after{display:none!important}
+.hamburger{display:none;flex-direction:column;gap:6px;cursor:pointer;z-index:1001}
+.hamburger span{width:24px;height:1.5px;background:var(--gold);transition:all .3s}
+.mobile-menu{display:none}
+
+@media(max-width:900px){
+.nav-links{display:none}
+.hamburger{display:flex}
+.mobile-menu{position:fixed;inset:0;background:rgba(8,8,8,.98);z-index:999;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:32px;opacity:0;pointer-events:none;transition:opacity .5s}
+.mobile-menu.active{opacity:1;pointer-events:all}
+.mobile-menu a{font-family:var(--font-display);font-size:28px;color:var(--cream);letter-spacing:.1em}
+}
+
+/* === HERO === */
+#hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#hero-canvas{position:absolute;inset:0;z-index:1}
+.hero-overlay{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(201,169,110,.04) 0%,transparent 50%),radial-gradient(ellipse at center,transparent 0%,rgba(8,8,8,.4) 60%,rgba(8,8,8,.85) 100%);z-index:2}
+.hero-content{position:relative;z-index:3;text-align:center;max-width:900px;padding:0 24px}
+.hero-logo-svg{margin:0 auto 32px;width:120px;height:auto;opacity:0}
+.hero-h1{font-family:var(--font-display);font-size:clamp(2.2rem,5.5vw,4.2rem);font-weight:400;line-height:1.15;color:var(--cream);margin-bottom:20px;opacity:0}
+.hero-h1 .gold{color:var(--gold)}
+.hero-sub{font-size:clamp(.95rem,1.8vw,1.15rem);color:var(--cream-dim);font-weight:300;letter-spacing:.03em;margin-bottom:40px;opacity:0;max-width:640px;margin-left:auto;margin-right:auto}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;font-family:var(--font-body);font-size:14px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;border:none;cursor:none;transition:all .4s var(--ease-out-expo);position:relative;overflow:hidden}
+.btn-gold{background:var(--gold);color:var(--black)}
+.btn-gold:hover{background:var(--gold-light);color:var(--black);transform:translateY(-2px);box-shadow:0 8px 32px rgba(201,169,110,.3)}
+.btn-outline{background:transparent;color:var(--cream);border:1px solid rgba(245,240,232,.25)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+.scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0}
+.scroll-indicator span{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:rgba(245,240,232,.4)}
+.scroll-arrow{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollBounce 2s ease-in-out infinite}
+@keyframes scrollBounce{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(12px);opacity:.3}}
+
+/* === SECTION SHARED === */
+.section{padding:120px 0;position:relative}
+.section-inner{max-width:1200px;margin:0 auto;padding:0 32px}
+.section-label{font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:500}
+.section-title{font-family:var(--font-display);font-size:clamp(2rem,4vw,3.2rem);font-weight:400;line-height:1.2;color:var(--cream);margin-bottom:24px}
+.section-divider{width:60px;height:1px;background:linear-gradient(to right,var(--gold),transparent);margin:48px auto}
+.gold-line{width:100%;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:.2}
+
+/* === [02] MANIFESTE === */
+.manifeste-text{font-family:var(--font-display);font-size:clamp(1.4rem,3vw,2.2rem);font-weight:300;line-height:1.5;color:var(--cream);text-align:center;max-width:800px;margin:0 auto 64px;font-style:italic}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;text-align:center}
+.stat-card{padding:40px 20px;border:1px solid rgba(201,169,110,.1);background:rgba(201,169,110,.02);position:relative;overflow:hidden;transition:all .5s var(--ease-out-expo)}
+.stat-card:hover{border-color:rgba(201,169,110,.3);background:rgba(201,169,110,.05)}
+.stat-icon{font-size:28px;margin-bottom:16px}
+.stat-number{font-family:var(--font-display);font-size:clamp(2.5rem,5vw,3.8rem);font-weight:300;color:var(--gold);line-height:1}
+.stat-label{font-size:14px;color:var(--cream-dim);margin-top:8px;letter-spacing:.05em}
+@media(max-width:700px){.stats-grid{grid-template-columns:1fr}}
+
+/* === [03] SERVICES === */
+.services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.service-card{padding:36px 28px;border:1px solid rgba(201,169,110,.08);background:var(--black-card);position:relative;overflow:hidden;transition:all .5s var(--ease-out-expo);cursor:none}
+.service-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(201,169,110,.08),transparent 70%);opacity:0;transition:opacity .5s}
+.service-card:hover{border-color:rgba(201,169,110,.3);transform:translateY(-4px);box-shadow:0 16px 48px rgba(201,169,110,.08)}
+.service-card:hover::before{opacity:1}
+.service-icon{font-size:32px;margin-bottom:20px;display:block}
+.service-icon svg{width:32px;height:32px;stroke:var(--gold);fill:none;stroke-width:1.5}
+.service-title{font-family:var(--font-display);font-size:1.2rem;font-weight:500;color:var(--cream);margin-bottom:8px}
+.service-desc{font-size:14px;color:var(--cream-dim);line-height:1.6}
+@media(max-width:900px){.services-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:550px){.services-grid{grid-template-columns:1fr}}
+
+/* === [04] OFFRE 72H === */
+.offre72{background:linear-gradient(180deg,rgba(201,169,110,.03) 0%,var(--black) 100%);border-top:1px solid rgba(201,169,110,.08);border-bottom:1px solid rgba(201,169,110,.08)}
+.offre72 .section-title{text-align:center}
+.steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin:56px 0 48px;position:relative}
+.steps-row::before{content:'';position:absolute;top:40px;left:15%;right:15%;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:.3}
+.step{text-align:center;position:relative}
+.step-num{width:80px;height:80px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:var(--font-display);font-size:28px;color:var(--gold);background:var(--black);position:relative;z-index:2}
+.step-day{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.step-title{font-family:var(--font-display);font-size:1.1rem;color:var(--cream);margin-bottom:6px;font-weight:500}
+.step-desc{font-size:14px;color:var(--cream-dim)}
+@media(max-width:700px){.steps-row{grid-template-columns:1fr;gap:48px}.steps-row::before{display:none}}
+
+/* === [05] SOCIAL & UGC === */
+.social-split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.ig-mockup{background:var(--black-card);border:1px solid rgba(201,169,110,.1);border-radius:16px;padding:20px;overflow:hidden;position:relative}
+.ig-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.ig-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:600;color:var(--black);font-size:14px}
+.ig-name{font-size:13px;font-weight:500;color:var(--cream)}
+.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.ig-cell{aspect-ratio:1;background:linear-gradient(135deg,rgba(201,169,110,.15),rgba(201,169,110,.05));position:relative;overflow:hidden}
+.ig-cell::after{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 40%,rgba(201,169,110,.1));opacity:0;transition:opacity .3s}
+.ig-cell:hover::after{opacity:1}
+.social-bullets{list-style:none;display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.social-bullets li{padding:8px 20px;border:1px solid rgba(201,169,110,.15);font-size:13px;color:var(--cream-dim);letter-spacing:.04em;transition:all .3s}
+.social-bullets li:hover{border-color:var(--gold);color:var(--gold)}
+@media(max-width:800px){.social-split{grid-template-columns:1fr}}
+
+/* === [06] ADS & VIDEO === */
+.ads-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.metric-card{padding:32px;border:1px solid rgba(201,169,110,.1);text-align:center;background:rgba(201,169,110,.02)}
+.metric-value{font-family:var(--font-display);font-size:2.4rem;color:var(--gold);font-weight:300}
+.metric-label{font-size:13px;color:var(--cream-dim);margin-top:4px;letter-spacing:.05em}
+@media(max-width:700px){.ads-metrics{grid-template-columns:1fr}}
+
+/* === [07] BRANDING === */
+.brand-split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.linkedin-mock{border:1px solid rgba(201,169,110,.1);border-radius:12px;overflow:hidden;position:relative}
+.linkedin-label{position:absolute;top:12px;left:12px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;z-index:2}
+.linkedin-label.before{background:rgba(255,60,60,.2);color:#ff6b6b;border:1px solid rgba(255,60,60,.2)}
+.linkedin-label.after{background:rgba(201,169,110,.2);color:var(--gold);border:1px solid rgba(201,169,110,.2)}
+.linkedin-inner{padding:32px 24px;background:var(--black-card)}
+.linkedin-inner .name{font-family:var(--font-display);font-size:1.3rem;color:var(--cream);margin-bottom:4px}
+.linkedin-inner .role{font-size:13px;color:var(--cream-dim);margin-bottom:16px}
+.linkedin-inner .bio{font-size:13px;line-height:1.6;color:rgba(245,240,232,.5)}
+.linkedin-inner.enhanced .name{color:var(--gold)}
+.linkedin-inner.enhanced .bio{color:var(--cream-dim)}
+.brand-services{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.brand-services span{padding:8px 20px;border:1px solid rgba(201,169,110,.15);font-size:13px;color:var(--cream-dim)}
+@media(max-width:800px){.brand-split{grid-template-columns:1fr}}
+
+/* === [08] EBOOKS === */
+.ebook-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.ebook-mockup{perspective:800px}
+.ebook-3d{width:220px;height:310px;margin:0 auto;position:relative;transform:rotateY(-12deg) rotateX(2deg);transform-style:preserve-3d;transition:transform .6s var(--ease-out-expo)}
+.ebook-3d:hover{transform:rotateY(-4deg) rotateX(0deg)}
+.ebook-cover{position:absolute;inset:0;background:linear-gradient(135deg,var(--gold-dark),var(--gold),var(--gold-dark));border-radius:4px 12px 12px 4px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px;box-shadow:8px 8px 32px rgba(0,0,0,.5),-2px 0 8px rgba(201,169,110,.1)}
+.ebook-cover .eb-title{font-family:var(--font-display);font-size:1.4rem;color:var(--black);text-align:center;font-weight:600}
+.ebook-cover .eb-author{font-size:12px;color:rgba(8,8,8,.6);margin-top:8px;letter-spacing:.1em;text-transform:uppercase}
+.ebook-spine{position:absolute;left:-15px;top:0;bottom:0;width:15px;background:linear-gradient(to right,var(--gold-dark),var(--gold));border-radius:4px 0 0 4px;transform:rotateY(90deg);transform-origin:right center}
+.ebook-steps{display:flex;gap:24px;margin-top:32px;flex-wrap:wrap}
+.ebook-step{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--cream-dim)}
+.ebook-step .num{width:28px;height:28px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--gold);flex-shrink:0}
+@media(max-width:800px){.ebook-layout{grid-template-columns:1fr}}
+
+/* === [09] FREELANCES === */
+.map-container{position:relative;max-width:700px;margin:0 auto 48px}
+.map-svg{width:100%;height:auto}
+.freelance-profiles{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.freelance-profiles span{padding:10px 24px;border:1px solid rgba(201,169,110,.1);font-size:14px;color:var(--cream-dim);background:var(--black-card);transition:all .4s var(--ease-out-expo)}
+.freelance-profiles span:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+
+/* === [10] TESTIMONIALS === */
+.testimonials-section{background:var(--black-light)}
+.testi-track{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;padding:20px 0;-ms-overflow-style:none;scrollbar-width:none}
+.testi-track::-webkit-scrollbar{display:none}
+.testi-card{min-width:360px;max-width:400px;padding:36px;border:1px solid rgba(201,169,110,.1);background:var(--black-card);scroll-snap-align:start;flex-shrink:0;transition:all .4s}
+.testi-card:hover{border-color:rgba(201,169,110,.25)}
+.testi-stars{color:var(--gold);font-size:14px;letter-spacing:4px;margin-bottom:16px}
+.testi-text{font-family:var(--font-display);font-size:1.05rem;font-style:italic;color:var(--cream);line-height:1.7;margin-bottom:20px}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:600;color:var(--black);font-size:16px}
+.testi-name{font-size:14px;font-weight:500;color:var(--cream)}
+.testi-role{font-size:12px;color:var(--cream-dim)}
+@media(max-width:550px){.testi-card{min-width:300px}}
+
+/* === [11] CONTACT === */
+.contact-section{text-align:center}
+.contact-form{max-width:600px;margin:48px auto 0;text-align:left}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+.form-group label{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cream-dim)}
+.form-group input,.form-group textarea{background:rgba(245,240,232,.04);border:1px solid rgba(201,169,110,.12);padding:14px 16px;color:var(--cream);font-family:var(--font-body);font-size:14px;transition:border-color .3s;outline:none}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--gold)}
+.form-group textarea{resize:vertical;min-height:120px}
+.form-submit{display:flex;justify-content:center;margin-top:24px}
+.social-links{display:flex;gap:24px;justify-content:center;margin-top:48px}
+.social-links a{width:48px;height:48px;border:1px solid rgba(201,169,110,.15);display:flex;align-items:center;justify-content:center;transition:all .4s var(--ease-out-expo)}
+.social-links a:hover{border-color:var(--gold);background:rgba(201,169,110,.08);transform:translateY(-2px)}
+.social-links a svg{width:20px;height:20px;fill:var(--gold)}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}}
+
+/* === FOOTER === */
+footer{text-align:center;padding:32px;border-top:1px solid rgba(201,169,110,.06);font-size:13px;color:rgba(245,240,232,.3);letter-spacing:.05em}
+
+/* === UTILITY === */
+.text-center{text-align:center}
+.mt-48{margin-top:48px}
+.reveal{opacity:0;transform:translateY(40px)}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+<svg class="loader-logo" width="80" height="80" viewBox="0 0 200 200" fill="none">
+<defs><linearGradient id="lg" x1="30%" y1="0%" x2="70%" y2="100%"><stop offset="0%" stop-color="#e8d5a8"/><stop offset="40%" stop-color="#C9A96E"/><stop offset="100%" stop-color="#a3864e"/></linearGradient></defs>
+<path d="M100 18 L42 158 H62 L78 118 H88 L100 52 L112 118 H122 L138 158 H158 Z" fill="url(#lg)"/>
+<path d="M30 162 Q60 138 90 148 Q120 158 150 142 Q168 134 178 128" stroke="url(#lg)" stroke-width="5" fill="none" stroke-linecap="round"/>
+<path d="M74 128 H126" stroke="url(#lg)" stroke-width="3.5" stroke-linecap="round"/>
+</svg>
+<div class="loader-bar"><div class="loader-bar-inner" id="loader-bar"></div></div>
+</div>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor-dot" id="cursor-dot"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+<a href="#hero" class="nav-logo">
+<svg width="36" height="36" viewBox="0 0 200 200" fill="none">
+<defs><linearGradient id="navlg" x1="30%" y1="0%" x2="70%" y2="100%"><stop offset="0%" stop-color="#e8d5a8"/><stop offset="40%" stop-color="#C9A96E"/><stop offset="100%" stop-color="#a3864e"/></linearGradient></defs>
+<path d="M100 18 L42 158 H62 L78 118 H88 L100 52 L112 118 H122 L138 158 H158 Z" fill="url(#navlg)"/>
+<path d="M30 162 Q60 138 90 148 Q120 158 150 142 Q168 134 178 128" stroke="url(#navlg)" stroke-width="5" fill="none" stroke-linecap="round"/>
+<path d="M74 128 H126" stroke="url(#navlg)" stroke-width="3.5" stroke-linecap="round"/>
+</svg>
+<span class="nav-logo-text">AMEVIA</span>
+</a>
+<div class="nav-links">
+<a href="#services">Services</a>
+<a href="#offre72">Offre 72h</a>
+<a href="#temoignages">Avis</a>
+<a href="#contact" class="nav-cta">Contact</a>
+</div>
+<div class="hamburger" id="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('active')">
+<span></span><span></span><span></span>
+</div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+<a href="#services" onclick="this.parentElement.classList.remove('active')">Services</a>
+<a href="#offre72" onclick="this.parentElement.classList.remove('active')">Offre 72h</a>
+<a href="#temoignages" onclick="this.parentElement.classList.remove('active')">Avis</a>
+<a href="#contact" onclick="this.parentElement.classList.remove('active')">Contact</a>
+</div>
+
+<!-- [01] HERO -->
+<section id="hero">
+<canvas id="hero-canvas"></canvas>
+<div class="hero-overlay"></div>
+<div class="hero-content">
+<svg class="hero-logo-svg" width="120" height="120" viewBox="0 0 200 200" fill="none">
+<defs><linearGradient id="hlg" x1="30%" y1="0%" x2="70%" y2="100%"><stop offset="0%" stop-color="#e8d5a8"/><stop offset="40%" stop-color="#C9A96E"/><stop offset="100%" stop-color="#a3864e"/></linearGradient></defs>
+<path d="M100 18 L42 158 H62 L78 118 H88 L100 52 L112 118 H122 L138 158 H158 Z" fill="url(#hlg)"/>
+<path d="M30 162 Q60 138 90 148 Q120 158 150 142 Q168 134 178 128" stroke="url(#hlg)" stroke-width="5" fill="none" stroke-linecap="round"/>
+<path d="M74 128 H126" stroke="url(#hlg)" stroke-width="3.5" stroke-linecap="round"/>
+</svg>
+<h1 class="hero-h1">Votre <span class="gold">présence digitale</span>, au niveau de votre ambition.</h1>
+<p class="hero-sub">Agence de communication full-service — Sites web, contenu, publicité, personal branding.</p>
+<div class="hero-btns">
+<a href="#contact" class="btn btn-gold">Démarrer mon projet &rarr;</a>
+<a href="#services" class="btn btn-outline">Découvrir nos services &darr;</a>
+</div>
+</div>
+<div class="scroll-indicator" id="scrollInd">
+<span>Scroll</span>
+<div class="scroll-arrow"></div>
+</div>
+</section>
+
+<!-- [02] MANIFESTE -->
+<section class="section" id="manifeste">
+<div class="gold-line"></div>
+<div class="section-inner" style="padding-top:80px">
+<p class="manifeste-text reveal">&laquo; Nous ne créons pas juste des sites. Nous construisons des <em>présences digitales</em> qui imposent le respect. &raquo;</p>
+<div class="stats-grid">
+<div class="stat-card reveal">
+<div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+<div class="stat-number" data-target="72" data-suffix="h">0</div>
+<div class="stat-label">Délai de livraison site premium</div>
+</div>
+<div class="stat-card reveal">
+<div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="#C9A96E"/></svg></div>
+<div class="stat-number" data-target="8" data-suffix=" services">0</div>
+<div class="stat-label">Sous un même toit</div>
+</div>
+<div class="stat-card reveal">
+<div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+<div class="stat-number" data-target="100" data-suffix="%">0</div>
+<div class="stat-label">Orienté résultats</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- [03] SERVICES -->
+<section class="section" id="services">
+<div class="section-inner">
+<div class="text-center reveal">
+<div class="section-label">Nos services</div>
+<div class="section-title">Ce que nous faisons le mieux</div>
+</div>
+<div class="services-grid mt-48">
+<div class="service-card reveal">
+<span class="service-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="14" rx="2"/><line x1="3" y1="20" x2="21" y2="20"/><line x1="8" y1="17" x2="8" y2="20"/><line x1="16" y1="17" x2="16" y2="20"/></svg></span>
+<div class="service-title">Sites Web Premium</div>
+<div class="service-desc">Livrés en 72h, design sur-mesure, responsive et optimisé SEO.</div>
+</div>
+<div class="service-card reveal">
+<span class="service-icon"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></span>
+<div class="service-title">Réseaux Sociaux</div>
+<div class="service-desc">Stratégie, gestion, création de contenu et croissance organique.</div>
+</div>
+<div class="service-card reveal">
+<span class="service-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
+<div class="service-title">Contenu UGC & Collaboratif</div>
+<div class="service-desc">Créateurs santé, micro-influenceurs, contenu authentique.</div>
+</div>
+<div class="service-card reveal">
+<span class="service-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/></svg></span>
+<div class="service-title">Meta Ads</div>
+<div class="service-desc">Campagnes publicitaires optimisées pour la conversion et le ROI.</div>
+</div>
+<div class="service-card reveal">
+<span class="service-icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></span>
+<div class="service-title">Montage Vidéo</div>
+<div class="service-desc">Reels, publicités, brand films — montage professionnel.</div>
+</div>
+<div class="service-card reveal">
+<span class="service-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>
+<div class="service-title">Ebooks & Produits Digitaux</div>
+<div class="service-desc">Conception, rédaction, design et mise en vente — de A à Z.</div>
+</div>
+<div class="service-card reveal">
+<span class="service-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+<div class="service-title">Personal Branding & LinkedIn</div>
+<div class="service-desc">Ghostwriting, stratégie de marque perso, positionnement d'expert.</div>
+</div>
+<div class="service-card reveal">
+<span class="service-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></span>
+<div class="service-title">Réseau Freelance</div>
+<div class="service-desc">Talents qualifiés à Madagascar et à l'international.</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- [04] OFFRE 72H -->
+<section class="section offre72" id="offre72">
+<div class="section-inner text-center">
+<div class="section-label reveal">Offre phare</div>
+<div class="section-title reveal">Votre site premium. Livré en <span style="color:var(--gold)">72 heures</span>.</div>
+<div class="steps-row">
+<div class="step reveal">
+<div class="step-num">1</div>
+<div class="step-day">Jour 1</div>
+<div class="step-title">Brief</div>
+<div class="step-desc">On capte votre univers, votre vision et vos objectifs.</div>
+</div>
+<div class="step reveal">
+<div class="step-num">2</div>
+<div class="step-day">Jour 2</div>
+<div class="step-title">Design & Dev</div>
+<div class="step-desc">On construit votre vitrine digitale sur-mesure.</div>
+</div>
+<div class="step reveal">
+<div class="step-num">3</div>
+<div class="step-day">Jour 3</div>
+<div class="step-title">Livraison</div>
+<div class="step-desc">Vous êtes en ligne. Prêt à conquérir.</div>
+</div>
+</div>
+<a href="#contact" class="btn btn-gold reveal">Je veux mon site &rarr;</a>
+</div>
+</section>
+
+<!-- [05] SOCIAL & UGC -->
+<section class="section" id="social">
+<div class="section-inner">
+<div class="social-split">
+<div class="ig-mockup reveal">
+<div class="ig-header">
+<div class="ig-avatar">A</div>
+<div><div class="ig-name">amevia.agency</div><div style="font-size:11px;color:var(--cream-dim)">1.2k abonnés</div></div>
+</div>
+<div class="ig-grid">
+<div class="ig-cell" style="background:linear-gradient(135deg,rgba(201,169,110,.2),rgba(201,169,110,.05))"></div>
+<div class="ig-cell" style="background:linear-gradient(225deg,rgba(201,169,110,.15),rgba(8,8,8,.8))"></div>
+<div class="ig-cell" style="background:linear-gradient(180deg,rgba(201,169,110,.25),rgba(201,169,110,.05))"></div>
+<div class="ig-cell" style="background:linear-gradient(45deg,rgba(201,169,110,.1),rgba(201,169,110,.2))"></div>
+<div class="ig-cell" style="background:linear-gradient(315deg,rgba(201,169,110,.2),rgba(8,8,8,.9))"></div>
+<div class="ig-cell" style="background:linear-gradient(90deg,rgba(201,169,110,.15),rgba(201,169,110,.08))"></div>
+<div class="ig-cell" style="background:linear-gradient(270deg,rgba(201,169,110,.2),rgba(201,169,110,.03))"></div>
+<div class="ig-cell" style="background:linear-gradient(135deg,rgba(8,8,8,.7),rgba(201,169,110,.18))"></div>
+<div class="ig-cell" style="background:linear-gradient(180deg,rgba(201,169,110,.12),rgba(201,169,110,.22))"></div>
+</div>
+</div>
+<div class="reveal">
+<div class="section-label">Réseaux sociaux & UGC</div>
+<div class="section-title">Du contenu qui crée de l'émotion, de la connexion, et de la conversion.</div>
+<p style="color:var(--cream-dim);margin:16px 0 24px;font-size:15px">Nous gérons votre présence sur les réseaux sociaux avec une stratégie orientée engagement et conversion. Contenu UGC authentique avec des créateurs sélectionnés.</p>
+<ul class="social-bullets">
+<li>Community management</li><li>Stories & Reels</li><li>Micro-influenceurs santé</li><li>Contenu UGC authentique</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<!-- [06] ADS & VIDEO -->
+<section class="section" id="ads">
+<div class="section-inner text-center">
+<div class="section-label reveal">Meta Ads & Montage Vidéo</div>
+<div class="section-title reveal">Des publicités qui vendent.<br>Des vidéos qui marquent.</div>
+<p class="reveal" style="color:var(--cream-dim);max-width:600px;margin:0 auto 16px;font-size:15px">Campagnes Meta Ads optimisées pour le ROI. Montage vidéo professionnel pour reels, publicités et brand films.</p>
+<div class="ads-metrics">
+<div class="metric-card reveal">
+<div class="metric-value" data-target="3.2" data-suffix="x" data-decimal="1">0</div>
+<div class="metric-label">ROAS moyen</div>
+</div>
+<div class="metric-card reveal">
+<div class="metric-value" data-target="150" data-suffix="K+" data-decimal="0">0</div>
+<div class="metric-label">Personnes touchées / mois</div>
+</div>
+<div class="metric-card reveal">
+<div class="metric-value" data-target="8.4" data-suffix="%" data-decimal="1">0</div>
+<div class="metric-label">Taux d'engagement</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- [07] PERSONAL BRANDING -->
+<section class="section" id="branding">
+<div class="section-inner">
+<div class="brand-split">
+<div class="reveal">
+<div class="section-label">Personal Branding & LinkedIn</div>
+<div class="section-title">Votre nom est votre marque. On la construit avec vous.</div>
+<p style="color:var(--cream-dim);margin:16px 0 24px;font-size:15px">Ghostwriting LinkedIn, stratégie éditoriale, optimisation de profil. Devenez la référence de votre domaine.</p>
+<div class="brand-services">
+<span>Ghostwriting</span><span>Stratégie éditoriale</span><span>Optimisation profil</span><span>Positionnement d'expert</span>
+</div>
+</div>
+<div class="reveal" style="display:grid;gap:16px">
+<div class="linkedin-mock">
+<div class="linkedin-label before">Avant</div>
+<div class="linkedin-inner">
+<div class="name">Dr. Marie D.</div>
+<div class="role">Médecin</div>
+<div class="bio">Médecin généraliste. Passionnée par mon métier. Contactez-moi pour toute question.</div>
+</div>
+</div>
+<div class="linkedin-mock">
+<div class="linkedin-label after">Après</div>
+<div class="linkedin-inner enhanced">
+<div class="name">Dr. Marie D.</div>
+<div class="role">Médecin Généraliste | Experte Santé Préventive | Conférencière</div>
+<div class="bio">J'aide 10 000+ patients par an à reprendre le contrôle de leur santé. Fondatrice de SantéPrev360. Auteure de "Prévenir pour guérir". Interviews : Le Monde, France Inter.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- [08] EBOOKS -->
+<section class="section" id="ebooks">
+<div class="section-inner">
+<div class="ebook-layout">
+<div class="ebook-mockup reveal">
+<div class="ebook-3d">
+<div class="ebook-spine"></div>
+<div class="ebook-cover">
+<div class="eb-title">Votre Expertise<br>Monétisée</div>
+<div class="eb-author">Par Amevia</div>
+</div>
+</div>
+</div>
+<div class="reveal">
+<div class="section-label">Produits Digitaux & Ebooks</div>
+<div class="section-title">Monétisez votre expertise avec un produit digital professionnel.</div>
+<p style="color:var(--cream-dim);margin:16px 0 24px;font-size:15px">De la conception à la mise en vente, nous vous accompagnons pour créer des ebooks et formations qui génèrent des revenus passifs.</p>
+<div class="ebook-steps">
+<div class="ebook-step"><div class="num">1</div>Concept</div>
+<div class="ebook-step"><div class="num">2</div>Rédaction</div>
+<div class="ebook-step"><div class="num">3</div>Design</div>
+<div class="ebook-step"><div class="num">4</div>Mise en vente</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- [09] FREELANCES -->
+<section class="section" id="freelances">
+<div class="section-inner text-center">
+<div class="section-label reveal">Réseau de Freelances</div>
+<div class="section-title reveal">Besoin d'un profil spécifique ?<br><span style="color:var(--gold)">On a le réseau.</span></div>
+<p class="reveal" style="color:var(--cream-dim);max-width:600px;margin:0 auto 40px;font-size:15px">Talents qualifiés à Madagascar et à l'international. Développeurs, designers, rédacteurs et plus encore.</p>
+<div class="map-container reveal">
+<svg class="map-svg" viewBox="0 0 700 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- Africa simplified outline -->
+<path d="M280 40 Q320 30 340 50 Q360 35 380 45 Q400 40 410 55 L420 80 Q430 100 425 130 L430 160 Q435 190 420 220 L400 260 Q380 290 350 300 Q330 305 320 290 L310 270 Q290 250 280 220 L270 180 Q260 150 265 120 L270 90 Q275 60 280 40Z" stroke="rgba(201,169,110,.2)" stroke-width="1" fill="rgba(201,169,110,.03)"/>
+<!-- Madagascar highlighted -->
+<path d="M430 200 Q435 190 440 195 L445 215 Q448 240 442 260 L435 270 Q430 265 428 250 L427 230 Q426 210 430 200Z" stroke="var(--gold)" stroke-width="2" fill="rgba(201,169,110,.15)">
+<animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+</path>
+<!-- Connection lines -->
+<line x1="438" y1="230" x2="300" y2="120" stroke="var(--gold)" stroke-width="0.5" stroke-dasharray="4,4" opacity="0.4"/>
+<line x1="438" y1="230" x2="200" y2="80" stroke="var(--gold)" stroke-width="0.5" stroke-dasharray="4,4" opacity="0.3"/>
+<line x1="438" y1="230" x2="500" y2="100" stroke="var(--gold)" stroke-width="0.5" stroke-dasharray="4,4" opacity="0.3"/>
+<!-- Dots -->
+<circle cx="438" cy="230" r="5" fill="var(--gold)"><animate attributeName="r" values="4;7;4" dur="2s" repeatCount="indefinite"/></circle>
+<circle cx="300" cy="120" r="3" fill="var(--gold)" opacity="0.6"/>
+<circle cx="200" cy="80" r="3" fill="var(--gold)" opacity="0.5"/>
+<circle cx="500" cy="100" r="3" fill="var(--gold)" opacity="0.5"/>
+<!-- Labels -->
+<text x="438" y="285" text-anchor="middle" fill="var(--gold)" font-family="Inter,sans-serif" font-size="12" letter-spacing="0.1em">MADAGASCAR</text>
+<text x="200" y="72" text-anchor="middle" fill="rgba(245,240,232,.4)" font-family="Inter,sans-serif" font-size="10">Europe</text>
+<text x="500" y="92" text-anchor="middle" fill="rgba(245,240,232,.4)" font-family="Inter,sans-serif" font-size="10">Asie</text>
+<text x="300" y="112" text-anchor="middle" fill="rgba(245,240,232,.4)" font-family="Inter,sans-serif" font-size="10">Afrique</text>
+</svg>
+</div>
+<div class="freelance-profiles reveal">
+<span>Développeurs</span><span>Designers</span><span>Rédacteurs</span><span>Motion designers</span><span>Community managers</span>
+</div>
+</div>
+</section>
+
+<!-- [10] TESTIMONIALS -->
+<section class="section testimonials-section" id="temoignages">
+<div class="section-inner">
+<div class="text-center reveal">
+<div class="section-label">Témoignages</div>
+<div class="section-title">Ce que disent nos clients</div>
+</div>
+<div class="testi-track mt-48">
+<div class="testi-card reveal">
+<div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+<div class="testi-text">"Amevia a transformé notre présence en ligne. Le site a été livré en 3 jours et les résultats ont été immédiats. Professionnalisme exceptionnel."</div>
+<div class="testi-author"><div class="testi-avatar">S</div><div><div class="testi-name">Dr. Sarah K.</div><div class="testi-role">Dermatologue, Antananarivo</div></div></div>
+</div>
+<div class="testi-card reveal">
+<div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+<div class="testi-text">"Notre engagement sur Instagram a triplé en 2 mois. L'équipe comprend vraiment les enjeux du secteur santé et crée du contenu qui résonne."</div>
+<div class="testi-author"><div class="testi-avatar">M</div><div><div class="testi-name">Marc R.</div><div class="testi-role">Fondateur, HealthTech Startup</div></div></div>
+</div>
+<div class="testi-card reveal">
+<div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+<div class="testi-text">"Le ghostwriting LinkedIn a complètement changé ma visibilité. Je reçois maintenant des demandes de conférences chaque semaine."</div>
+<div class="testi-author"><div class="testi-avatar">A</div><div><div class="testi-name">Aminata D.</div><div class="testi-role">Consultante Santé Publique</div></div></div>
+</div>
+<div class="testi-card reveal">
+<div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+<div class="testi-text">"Notre ebook s'est vendu à 500+ exemplaires le premier mois. Amevia gère tout, de la rédaction à la mise en vente. Impressionnant."</div>
+<div class="testi-author"><div class="testi-avatar">J</div><div><div class="testi-name">Jean-Pierre L.</div><div class="testi-role">Coach en Nutrition</div></div></div>
+</div>
+<div class="testi-card reveal">
+<div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+<div class="testi-text">"Les campagnes Meta Ads ont généré un ROAS de 4.5x dès le premier mois. L'équipe est réactive et les reportings sont clairs."</div>
+<div class="testi-author"><div class="testi-avatar">N</div><div><div class="testi-name">Nadia F.</div><div class="testi-role">E-commerce, Dakar</div></div></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- [11] CONTACT -->
+<section class="section contact-section" id="contact">
+<div class="section-inner">
+<div class="reveal">
+<div class="section-label">Contact</div>
+<div class="section-title">Prêt à marquer les esprits ?</div>
+<p style="color:var(--cream-dim);font-size:15px;max-width:500px;margin:0 auto">Dites-nous ce que vous voulez accomplir. On s'occupe du reste.</p>
+</div>
+<form class="contact-form reveal" onsubmit="event.preventDefault();this.querySelector('.btn-gold').textContent='Envoyé ✓';this.querySelector('.btn-gold').style.background='#2a6e3f'">
+<div class="form-row">
+<div class="form-group"><label>Nom</label><input type="text" placeholder="Votre nom" required></div>
+<div class="form-group"><label>Email</label><input type="email" placeholder="email@exemple.com" required></div>
+</div>
+<div class="form-row">
+<div class="form-group full"><label>Téléphone</label><input type="tel" placeholder="+261 XX XXX XXXX"></div>
+</div>
+<div class="form-row">
+<div class="form-group full"><label>Votre projet</label><textarea placeholder="Décrivez votre projet en quelques mots..."></textarea></div>
+</div>
+<div class="form-submit"><button type="submit" class="btn btn-gold">Envoyer &rarr;</button></div>
+</form>
+<div class="social-links reveal" style="margin-top:48px">
+<a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+<a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+<a href="#" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+</div>
+</div>
+</section>
+
+<footer>
+&copy; 2026 Amevia LLC &middot; Tous droits réservés
+</footer>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+/* ══════════ LOADER ══════════ */
+(function(){
+const bar=document.getElementById('loader-bar');
+const loader=document.getElementById('loader');
+const logo=loader.querySelector('.loader-logo');
+let w=0;
+logo.style.transition='opacity .6s, transform .6s';
+logo.style.opacity='1';logo.style.transform='translateY(0)';
+const iv=setInterval(()=>{w+=Math.random()*15+5;if(w>=100){w=100;clearInterval(iv)}bar.style.width=w+'%';bar.style.transition='width .3s'},60);
+window.addEventListener('load',()=>{
+setTimeout(()=>{
+loader.style.transition='opacity .6s';loader.style.opacity='0';
+setTimeout(()=>{loader.style.display='none';initAll()},600);
+},800);
+});
+})();
+
+function initAll(){
+initParticles();initCursor();initNavbar();initGSAP();initCounters();
+}
+
+/* ══════════ GOLDEN PARTICLES ══════════ */
+function initParticles(){
+const c=document.getElementById('hero-canvas');
+const ctx=c.getContext('2d');
+let W,H;const particles=[];const count=80;
+
+function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+
+class Particle{
+constructor(){this.reset()}
+reset(){
+this.x=Math.random()*W;this.y=Math.random()*H;
+this.r=Math.random()*2+0.5;
+this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;
+this.alpha=Math.random()*.5+.1;
+this.targetAlpha=this.alpha;
+this.gold=`rgba(${180+Math.random()*40},${150+Math.random()*30},${80+Math.random()*40},`;
+}
+update(){
+this.x+=this.vx;this.y+=this.vy;
+this.alpha+=(this.targetAlpha-this.alpha)*.02;
+if(Math.random()<.005)this.targetAlpha=Math.random()*.5+.1;
+if(this.x<0||this.x>W)this.vx*=-1;
+if(this.y<0||this.y>H)this.vy*=-1;
+}
+draw(){
+ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+ctx.fillStyle=this.gold+this.alpha+')';ctx.fill();
+}
+}
+for(let i=0;i<count;i++)particles.push(new Particle());
+
+function animate(){
+ctx.clearRect(0,0,W,H);
+for(let i=0;i<particles.length;i++){
+particles[i].update();particles[i].draw();
+for(let j=i+1;j<particles.length;j++){
+const dx=particles[i].x-particles[j].x;
+const dy=particles[i].y-particles[j].y;
+const d=Math.sqrt(dx*dx+dy*dy);
+if(d<120){
+ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);
+ctx.lineTo(particles[j].x,particles[j].y);
+ctx.strokeStyle='rgba(201,169,110,'+(1-d/120)*.08+')';
+ctx.lineWidth=.5;ctx.stroke();
+}
+}
+}
+requestAnimationFrame(animate);
+}
+animate();
+}
+
+/* ══════════ CUSTOM CURSOR ══════════ */
+function initCursor(){
+const dot=document.getElementById('cursor-dot');
+const ring=document.getElementById('cursor-ring');
+if(!dot||window.innerWidth<769)return;
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
+(function move(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(move)})();
+document.querySelectorAll('a,button,.service-card,.btn').forEach(el=>{
+el.addEventListener('mouseenter',()=>ring.classList.add('hover'));
+el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));
+});
+}
+
+/* ══════════ NAVBAR SCROLL ══════════ */
+function initNavbar(){
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+nav.classList.toggle('scrolled',window.scrollY>80);
+});
+}
+
+/* ══════════ GSAP ANIMATIONS ══════════ */
+function initGSAP(){
+gsap.registerPlugin(ScrollTrigger);
+
+// Hero entrance
+const tl=gsap.timeline({delay:.1});
+tl.to('.hero-logo-svg',{opacity:1,y:0,duration:1,ease:'power3.out'})
+.to('.hero-h1',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-=.5')
+.to('.hero-sub',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-=.5')
+.to('.hero-btns',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-=.4')
+.to('#scrollInd',{opacity:1,duration:.8},'-=.3');
+
+// Set initial state for hero elements
+gsap.set(['.hero-logo-svg','.hero-h1','.hero-sub','.hero-btns'],{y:30});
+
+// Reveal all .reveal elements on scroll
+gsap.utils.toArray('.reveal').forEach((el,i)=>{
+gsap.fromTo(el,{opacity:0,y:40},{
+opacity:1,y:0,duration:.8,ease:'power3.out',
+scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'}
+});
+});
+
+// Gold line dividers
+gsap.utils.toArray('.gold-line').forEach(line=>{
+gsap.fromTo(line,{scaleX:0},{
+scaleX:1,duration:1.2,ease:'power2.inOut',
+scrollTrigger:{trigger:line,start:'top 90%'}
+});
+});
+
+// Service cards stagger
+ScrollTrigger.create({
+trigger:'.services-grid',start:'top 80%',
+onEnter:()=>{
+gsap.fromTo('.service-card',{opacity:0,y:30},{opacity:1,y:0,stagger:.08,duration:.6,ease:'power3.out'});
+}
+});
+
+// Steps stagger
+ScrollTrigger.create({
+trigger:'.steps-row',start:'top 80%',
+onEnter:()=>{
+gsap.fromTo('.step',{opacity:0,y:30},{opacity:1,y:0,stagger:.15,duration:.7,ease:'power3.out'});
+}
+});
+
+// Parallax effects
+gsap.utils.toArray('.ig-mockup,.ebook-mockup,.map-container').forEach(el=>{
+gsap.to(el,{y:-20,scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:1}});
+});
+}
+
+/* ══════════ COUNTER ANIMATION ══════════ */
+function initCounters(){
+const counters=document.querySelectorAll('[data-target]');
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+const el=entry.target;
+const target=parseFloat(el.dataset.target);
+const suffix=el.dataset.suffix||'';
+const dec=parseInt(el.dataset.decimal||'0');
+const duration=1500;
+const start=performance.now();
+function tick(now){
+const p=Math.min((now-start)/duration,1);
+const eased=1-Math.pow(1-p,3);
+const val=(target*eased);
+el.textContent=(dec>0?val.toFixed(dec):Math.round(val))+suffix;
+if(p<1)requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+observer.unobserve(el);
+}
+});
+},{threshold:.5});
+counters.forEach(c=>observer.observe(c));
+}
+</script>
+</body>
+</html>
