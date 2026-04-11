@@ -107,19 +107,42 @@ a:hover{color:var(--gold-light)}
 
 /* === [03] SERVICES === */
 .services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.service-card{padding:36px 28px;border:1px solid rgba(201,169,110,.08);background:var(--black-card);position:relative;overflow:hidden;transition:all .5s var(--ease-out-expo);cursor:none}
-.service-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(201,169,110,.08),transparent 70%);opacity:0;transition:opacity .5s}
+.service-card{padding:0;border:1px solid rgba(201,169,110,.08);background:var(--black-card);position:relative;overflow:hidden;transition:all .5s var(--ease-out-expo);cursor:none;display:flex;flex-direction:column}
+.service-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(201,169,110,.08),transparent 70%);opacity:0;transition:opacity .5s;z-index:2;pointer-events:none}
 .service-card:hover{border-color:rgba(201,169,110,.3);transform:translateY(-4px);box-shadow:0 16px 48px rgba(201,169,110,.08)}
 .service-card:hover::before{opacity:1}
-.service-icon{font-size:32px;margin-bottom:20px;display:block}
-.service-icon svg{width:32px;height:32px;stroke:var(--gold);fill:none;stroke-width:1.5}
-.service-title{font-family:var(--font-display);font-size:1.2rem;font-weight:500;color:var(--cream);margin-bottom:8px}
-.service-desc{font-size:14px;color:var(--cream-dim);line-height:1.6}
+.service-card:hover .service-img img{transform:scale(1.08)}
+.service-img{height:160px;overflow:hidden;position:relative}
+.service-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease-out-expo);filter:brightness(.7) saturate(.8)}
+.service-img::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,var(--black-card),transparent);pointer-events:none}
+.service-body{padding:24px 24px 28px;flex:1}
+.service-icon{font-size:32px;margin-bottom:16px;display:block}
+.service-icon svg{width:28px;height:28px;stroke:var(--gold);fill:none;stroke-width:1.5}
+.service-title{font-family:var(--font-display);font-size:1.15rem;font-weight:500;color:var(--cream);margin-bottom:6px}
+.service-desc{font-size:13px;color:var(--cream-dim);line-height:1.6}
 @media(max-width:900px){.services-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:550px){.services-grid{grid-template-columns:1fr}}
 
+/* === PORTFOLIO SHOWCASE === */
+.portfolio-scroll{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;padding:20px 0;-ms-overflow-style:none;scrollbar-width:none}
+.portfolio-scroll::-webkit-scrollbar{display:none}
+.portfolio-item{min-width:380px;scroll-snap-align:start;flex-shrink:0;position:relative;overflow:hidden;border:1px solid rgba(201,169,110,.08);transition:all .5s}
+.portfolio-item:hover{border-color:rgba(201,169,110,.25)}
+.portfolio-item img{width:100%;height:260px;object-fit:cover;display:block;transition:transform .6s var(--ease-out-expo);filter:brightness(.85)}
+.portfolio-item:hover img{transform:scale(1.05)}
+.portfolio-overlay{position:absolute;bottom:0;left:0;right:0;padding:24px;background:linear-gradient(to top,rgba(8,8,8,.95),rgba(8,8,8,.6),transparent)}
+.portfolio-overlay h3{font-family:var(--font-display);font-size:1.2rem;color:var(--cream);margin-bottom:4px}
+.portfolio-overlay p{font-size:12px;color:var(--cream-dim);letter-spacing:.04em}
+.portfolio-tags{display:flex;gap:6px;margin-top:8px}
+.portfolio-tags span{font-size:10px;padding:3px 10px;border:1px solid rgba(201,169,110,.2);color:var(--gold);letter-spacing:.06em}
+@media(max-width:550px){.portfolio-item{min-width:300px}}
+
 /* === [04] OFFRE 72H === */
-.offre72{background:linear-gradient(180deg,rgba(201,169,110,.03) 0%,var(--black) 100%);border-top:1px solid rgba(201,169,110,.08);border-bottom:1px solid rgba(201,169,110,.08)}
+.offre72{position:relative;overflow:hidden;border-top:1px solid rgba(201,169,110,.08);border-bottom:1px solid rgba(201,169,110,.08)}
+.offre72-bg{position:absolute;inset:0;z-index:0}
+.offre72-bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.12) saturate(.5)}
+.offre72-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,var(--black),rgba(8,8,8,.5),var(--black))}
+.offre72 .section-inner{position:relative;z-index:1}
 .offre72 .section-title{text-align:center}
 .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin:56px 0 48px;position:relative}
 .steps-row::before{content:'';position:absolute;top:40px;left:15%;right:15%;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:.3}
@@ -137,8 +160,10 @@ a:hover{color:var(--gold-light)}
 .ig-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:600;color:var(--black);font-size:14px}
 .ig-name{font-size:13px;font-weight:500;color:var(--cream)}
 .ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
-.ig-cell{aspect-ratio:1;background:linear-gradient(135deg,rgba(201,169,110,.15),rgba(201,169,110,.05));position:relative;overflow:hidden}
-.ig-cell::after{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 40%,rgba(201,169,110,.1));opacity:0;transition:opacity .3s}
+.ig-cell{aspect-ratio:1;position:relative;overflow:hidden}
+.ig-cell img{width:100%;height:100%;object-fit:cover;transition:transform .4s var(--ease-out-expo);filter:brightness(.85) contrast(1.05)}
+.ig-cell:hover img{transform:scale(1.1)}
+.ig-cell::after{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 40%,rgba(201,169,110,.08));opacity:0;transition:opacity .3s}
 .ig-cell:hover::after{opacity:1}
 .social-bullets{list-style:none;display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
 .social-bullets li{padding:8px 20px;border:1px solid rgba(201,169,110,.15);font-size:13px;color:var(--cream-dim);letter-spacing:.04em;transition:all .3s}
@@ -146,8 +171,13 @@ a:hover{color:var(--gold-light)}
 @media(max-width:800px){.social-split{grid-template-columns:1fr}}
 
 /* === [06] ADS & VIDEO === */
+.ads-section{position:relative;overflow:hidden}
+.ads-bg{position:absolute;inset:0;z-index:0}
+.ads-bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.15) saturate(.6)}
+.ads-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,var(--black),rgba(8,8,8,.6),var(--black))}
+.ads-section .section-inner{position:relative;z-index:1}
 .ads-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
-.metric-card{padding:32px;border:1px solid rgba(201,169,110,.1);text-align:center;background:rgba(201,169,110,.02)}
+.metric-card{padding:32px;border:1px solid rgba(201,169,110,.15);text-align:center;background:rgba(8,8,8,.6);backdrop-filter:blur(12px)}
 .metric-value{font-family:var(--font-display);font-size:2.4rem;color:var(--gold);font-weight:300}
 .metric-label{font-size:13px;color:var(--cream-dim);margin-top:4px;letter-spacing:.05em}
 @media(max-width:700px){.ads-metrics{grid-template-columns:1fr}}
@@ -159,6 +189,10 @@ a:hover{color:var(--gold-light)}
 .linkedin-label.before{background:rgba(255,60,60,.2);color:#ff6b6b;border:1px solid rgba(255,60,60,.2)}
 .linkedin-label.after{background:rgba(201,169,110,.2);color:var(--gold);border:1px solid rgba(201,169,110,.2)}
 .linkedin-inner{padding:32px 24px;background:var(--black-card)}
+.linkedin-banner{height:80px;overflow:hidden}
+.linkedin-banner img{width:100%;height:100%;object-fit:cover;filter:brightness(.6)}
+.linkedin-avatar{width:56px;height:56px;border-radius:50%;overflow:hidden;border:3px solid var(--black-card);margin-top:-28px;margin-left:24px;position:relative;z-index:2}
+.linkedin-avatar img{width:100%;height:100%;object-fit:cover}
 .linkedin-inner .name{font-family:var(--font-display);font-size:1.3rem;color:var(--cream);margin-bottom:4px}
 .linkedin-inner .role{font-size:13px;color:var(--cream-dim);margin-bottom:16px}
 .linkedin-inner .bio{font-size:13px;line-height:1.6;color:rgba(245,240,232,.5)}
@@ -198,13 +232,18 @@ a:hover{color:var(--gold-light)}
 .testi-stars{color:var(--gold);font-size:14px;letter-spacing:4px;margin-bottom:16px}
 .testi-text{font-family:var(--font-display);font-size:1.05rem;font-style:italic;color:var(--cream);line-height:1.7;margin-bottom:20px}
 .testi-author{display:flex;align-items:center;gap:12px}
-.testi-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:600;color:var(--black);font-size:16px}
+.testi-avatar{width:48px;height:48px;border-radius:50%;overflow:hidden;border:2px solid rgba(201,169,110,.3);flex-shrink:0}
+.testi-avatar img{width:100%;height:100%;object-fit:cover}
 .testi-name{font-size:14px;font-weight:500;color:var(--cream)}
 .testi-role{font-size:12px;color:var(--cream-dim)}
 @media(max-width:550px){.testi-card{min-width:300px}}
 
 /* === [11] CONTACT === */
-.contact-section{text-align:center}
+.contact-section{text-align:center;position:relative;overflow:hidden}
+.contact-bg{position:absolute;inset:0;z-index:0}
+.contact-bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.08) saturate(.4)}
+.contact-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(8,8,8,.7),rgba(8,8,8,.95))}
+.contact-section .section-inner{position:relative;z-index:1}
 .contact-form{max-width:600px;margin:48px auto 0;text-align:left}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .form-group{display:flex;flex-direction:column;gap:6px}
@@ -341,51 +380,86 @@ footer{text-align:center;padding:32px;border-top:1px solid rgba(201,169,110,.06)
 </div>
 <div class="services-grid mt-48">
 <div class="service-card reveal">
+<div class="service-img"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" alt="Sites web" loading="lazy"></div>
+<div class="service-body">
 <span class="service-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="14" rx="2"/><line x1="3" y1="20" x2="21" y2="20"/><line x1="8" y1="17" x2="8" y2="20"/><line x1="16" y1="17" x2="16" y2="20"/></svg></span>
 <div class="service-title">Sites Web Premium</div>
-<div class="service-desc">Livrés en 72h, design sur-mesure, responsive et optimisé SEO.</div>
-</div>
+<div class="service-desc">Livres en 72h, design sur-mesure, responsive et optimise SEO.</div>
+</div></div>
 <div class="service-card reveal">
+<div class="service-img"><img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&q=80" alt="Reseaux sociaux" loading="lazy"></div>
+<div class="service-body">
 <span class="service-icon"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></span>
-<div class="service-title">Réseaux Sociaux</div>
-<div class="service-desc">Stratégie, gestion, création de contenu et croissance organique.</div>
-</div>
+<div class="service-title">Reseaux Sociaux</div>
+<div class="service-desc">Strategie, gestion, creation de contenu et croissance organique.</div>
+</div></div>
 <div class="service-card reveal">
+<div class="service-img"><img src="https://images.unsplash.com/photo-1598128558393-70ff21f8be44?w=600&q=80" alt="Contenu UGC" loading="lazy"></div>
+<div class="service-body">
 <span class="service-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
 <div class="service-title">Contenu UGC & Collaboratif</div>
-<div class="service-desc">Créateurs santé, micro-influenceurs, contenu authentique.</div>
-</div>
+<div class="service-desc">Createurs sante, micro-influenceurs, contenu authentique.</div>
+</div></div>
 <div class="service-card reveal">
+<div class="service-img"><img src="https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=600&q=80" alt="Meta Ads" loading="lazy"></div>
+<div class="service-body">
 <span class="service-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/></svg></span>
 <div class="service-title">Meta Ads</div>
-<div class="service-desc">Campagnes publicitaires optimisées pour la conversion et le ROI.</div>
-</div>
+<div class="service-desc">Campagnes publicitaires optimisees pour la conversion et le ROI.</div>
+</div></div>
 <div class="service-card reveal">
+<div class="service-img"><img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&q=80" alt="Montage video" loading="lazy"></div>
+<div class="service-body">
 <span class="service-icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></span>
-<div class="service-title">Montage Vidéo</div>
-<div class="service-desc">Reels, publicités, brand films — montage professionnel.</div>
-</div>
+<div class="service-title">Montage Video</div>
+<div class="service-desc">Reels, publicites, brand films — montage professionnel.</div>
+</div></div>
 <div class="service-card reveal">
+<div class="service-img"><img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&q=80" alt="Ebooks" loading="lazy"></div>
+<div class="service-body">
 <span class="service-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>
 <div class="service-title">Ebooks & Produits Digitaux</div>
-<div class="service-desc">Conception, rédaction, design et mise en vente — de A à Z.</div>
-</div>
+<div class="service-desc">Conception, redaction, design et mise en vente — de A a Z.</div>
+</div></div>
 <div class="service-card reveal">
+<div class="service-img"><img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&q=80" alt="Personal branding" loading="lazy"></div>
+<div class="service-body">
 <span class="service-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
 <div class="service-title">Personal Branding & LinkedIn</div>
-<div class="service-desc">Ghostwriting, stratégie de marque perso, positionnement d'expert.</div>
-</div>
+<div class="service-desc">Ghostwriting, strategie de marque perso, positionnement d'expert.</div>
+</div></div>
 <div class="service-card reveal">
+<div class="service-img"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80" alt="Freelances" loading="lazy"></div>
+<div class="service-body">
 <span class="service-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></span>
-<div class="service-title">Réseau Freelance</div>
-<div class="service-desc">Talents qualifiés à Madagascar et à l'international.</div>
+<div class="service-title">Reseau Freelance</div>
+<div class="service-desc">Talents qualifies a Madagascar et a l'international.</div>
+</div></div>
 </div>
+</div>
+</section>
+
+<!-- [03b] PORTFOLIO -->
+<section class="section" id="portfolio">
+<div class="section-inner">
+<div class="text-center reveal">
+<div class="section-label">Nos realisations</div>
+<div class="section-title">Des projets qui parlent d'eux-memes</div>
+</div>
+<div class="portfolio-scroll mt-48">
+<div class="portfolio-item reveal"><img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=700&q=80" alt="Site sante" loading="lazy"><div class="portfolio-overlay"><h3>Plateforme Sante & Bien-etre</h3><p>Site medical avec prise de RDV et blog sante</p><div class="portfolio-tags"><span>React</span><span>Tailwind</span><span>Supabase</span></div></div></div>
+<div class="portfolio-item reveal"><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=700&q=80" alt="Cabinet medical" loading="lazy"><div class="portfolio-overlay"><h3>Cabinet Medical — Corporate</h3><p>Presentation equipe, services et formulaire contact</p><div class="portfolio-tags"><span>Next.js</span><span>Framer Motion</span></div></div></div>
+<div class="portfolio-item reveal"><img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=700&q=80" alt="E-commerce" loading="lazy"><div class="portfolio-overlay"><h3>E-commerce — Boutique Locale</h3><p>Boutique en ligne avec paiement mobile money</p><div class="portfolio-tags"><span>React</span><span>Node.js</span><span>Mobile Money</span></div></div></div>
+<div class="portfolio-item reveal"><img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=700&q=80" alt="Immobilier" loading="lazy"><div class="portfolio-overlay"><h3>Agence Immobiliere — Dakar</h3><p>Catalogue de biens avec recherche avancee</p><div class="portfolio-tags"><span>Vue.js</span><span>Strapi</span><span>Mapbox</span></div></div></div>
+<div class="portfolio-item reveal"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=700&q=80" alt="Portfolio artiste" loading="lazy"><div class="portfolio-overlay"><h3>Portfolio — Artiste & Createur</h3><p>Galerie, biographie et systeme de booking</p><div class="portfolio-tags"><span>React</span><span>GSAP</span><span>Cloudinary</span></div></div></div>
+<div class="portfolio-item reveal"><img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=700&q=80" alt="Landing page" loading="lazy"><div class="portfolio-overlay"><h3>Landing Page — Lancement Produit</h3><p>Page haute conversion avec countdown</p><div class="portfolio-tags"><span>React</span><span>Tailwind</span><span>Stripe</span></div></div></div>
 </div>
 </div>
 </section>
 
 <!-- [04] OFFRE 72H -->
 <section class="section offre72" id="offre72">
+<div class="offre72-bg"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1400&q=80" alt="" loading="lazy"></div>
 <div class="section-inner text-center">
 <div class="section-label reveal">Offre phare</div>
 <div class="section-title reveal">Votre site premium. Livré en <span style="color:var(--gold)">72 heures</span>.</div>
@@ -423,15 +497,15 @@ footer{text-align:center;padding:32px;border-top:1px solid rgba(201,169,110,.06)
 <div><div class="ig-name">amevia.agency</div><div style="font-size:11px;color:var(--cream-dim)">1.2k abonnés</div></div>
 </div>
 <div class="ig-grid">
-<div class="ig-cell" style="background:linear-gradient(135deg,rgba(201,169,110,.2),rgba(201,169,110,.05))"></div>
-<div class="ig-cell" style="background:linear-gradient(225deg,rgba(201,169,110,.15),rgba(8,8,8,.8))"></div>
-<div class="ig-cell" style="background:linear-gradient(180deg,rgba(201,169,110,.25),rgba(201,169,110,.05))"></div>
-<div class="ig-cell" style="background:linear-gradient(45deg,rgba(201,169,110,.1),rgba(201,169,110,.2))"></div>
-<div class="ig-cell" style="background:linear-gradient(315deg,rgba(201,169,110,.2),rgba(8,8,8,.9))"></div>
-<div class="ig-cell" style="background:linear-gradient(90deg,rgba(201,169,110,.15),rgba(201,169,110,.08))"></div>
-<div class="ig-cell" style="background:linear-gradient(270deg,rgba(201,169,110,.2),rgba(201,169,110,.03))"></div>
-<div class="ig-cell" style="background:linear-gradient(135deg,rgba(8,8,8,.7),rgba(201,169,110,.18))"></div>
-<div class="ig-cell" style="background:linear-gradient(180deg,rgba(201,169,110,.12),rgba(201,169,110,.22))"></div>
+<div class="ig-cell"><img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=300&q=80" alt="" loading="lazy"></div>
+<div class="ig-cell"><img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=300&q=80" alt="" loading="lazy"></div>
+<div class="ig-cell"><img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&q=80" alt="" loading="lazy"></div>
+<div class="ig-cell"><img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=300&q=80" alt="" loading="lazy"></div>
+<div class="ig-cell"><img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=300&q=80" alt="" loading="lazy"></div>
+<div class="ig-cell"><img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=300&q=80" alt="" loading="lazy"></div>
+<div class="ig-cell"><img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=300&q=80" alt="" loading="lazy"></div>
+<div class="ig-cell"><img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=300&q=80" alt="" loading="lazy"></div>
+<div class="ig-cell"><img src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=300&q=80" alt="" loading="lazy"></div>
 </div>
 </div>
 <div class="reveal">
@@ -447,7 +521,8 @@ footer{text-align:center;padding:32px;border-top:1px solid rgba(201,169,110,.06)
 </section>
 
 <!-- [06] ADS & VIDEO -->
-<section class="section" id="ads">
+<section class="section ads-section" id="ads">
+<div class="ads-bg"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1400&q=80" alt="" loading="lazy"></div>
 <div class="section-inner text-center">
 <div class="section-label reveal">Meta Ads & Montage Vidéo</div>
 <div class="section-title reveal">Des publicités qui vendent.<br>Des vidéos qui marquent.</div>
@@ -484,18 +559,22 @@ footer{text-align:center;padding:32px;border-top:1px solid rgba(201,169,110,.06)
 <div class="reveal" style="display:grid;gap:16px">
 <div class="linkedin-mock">
 <div class="linkedin-label before">Avant</div>
+<div class="linkedin-banner"><img src="https://images.unsplash.com/photo-1557683316-973673baf926?w=600&q=80" alt="" loading="lazy"></div>
+<div class="linkedin-avatar"><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=120&q=80" alt="" loading="lazy"></div>
 <div class="linkedin-inner">
 <div class="name">Dr. Marie D.</div>
-<div class="role">Médecin</div>
-<div class="bio">Médecin généraliste. Passionnée par mon métier. Contactez-moi pour toute question.</div>
+<div class="role">Medecin</div>
+<div class="bio">Medecin generaliste. Passionnee par mon metier. Contactez-moi pour toute question.</div>
 </div>
 </div>
 <div class="linkedin-mock">
-<div class="linkedin-label after">Après</div>
+<div class="linkedin-label after">Apres</div>
+<div class="linkedin-banner"><img src="https://images.unsplash.com/photo-1579547945413-497e1b99dac0?w=600&q=80" alt="" loading="lazy"></div>
+<div class="linkedin-avatar"><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=120&q=80" alt="" loading="lazy"></div>
 <div class="linkedin-inner enhanced">
 <div class="name">Dr. Marie D.</div>
-<div class="role">Médecin Généraliste | Experte Santé Préventive | Conférencière</div>
-<div class="bio">J'aide 10 000+ patients par an à reprendre le contrôle de leur santé. Fondatrice de SantéPrev360. Auteure de "Prévenir pour guérir". Interviews : Le Monde, France Inter.</div>
+<div class="role">Medecin Generaliste | Experte Sante Preventive | Conferenciere</div>
+<div class="bio">J'aide 10 000+ patients par an a reprendre le controle de leur sante. Fondatrice de SantePrev360. Auteure de "Prevenir pour guerir". Interviews : Le Monde, France Inter.</div>
 </div>
 </div>
 </div>
@@ -577,28 +656,28 @@ footer{text-align:center;padding:32px;border-top:1px solid rgba(201,169,110,.06)
 <div class="testi-track mt-48">
 <div class="testi-card reveal">
 <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-<div class="testi-text">"Amevia a transformé notre présence en ligne. Le site a été livré en 3 jours et les résultats ont été immédiats. Professionnalisme exceptionnel."</div>
-<div class="testi-author"><div class="testi-avatar">S</div><div><div class="testi-name">Dr. Sarah K.</div><div class="testi-role">Dermatologue, Antananarivo</div></div></div>
+<div class="testi-text">"Amevia a transforme notre presence en ligne. Le site a ete livre en 3 jours et les resultats ont ete immediats. Professionnalisme exceptionnel."</div>
+<div class="testi-author"><div class="testi-avatar"><img src="https://images.unsplash.com/photo-1594824476967-48c8b964ac31?w=100&q=80" alt="Dr. Sarah K."></div><div><div class="testi-name">Dr. Sarah K.</div><div class="testi-role">Dermatologue, Antananarivo</div></div></div>
 </div>
 <div class="testi-card reveal">
 <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-<div class="testi-text">"Notre engagement sur Instagram a triplé en 2 mois. L'équipe comprend vraiment les enjeux du secteur santé et crée du contenu qui résonne."</div>
-<div class="testi-author"><div class="testi-avatar">M</div><div><div class="testi-name">Marc R.</div><div class="testi-role">Fondateur, HealthTech Startup</div></div></div>
+<div class="testi-text">"Notre engagement sur Instagram a triple en 2 mois. L'equipe comprend vraiment les enjeux du secteur sante et cree du contenu qui resonne."</div>
+<div class="testi-author"><div class="testi-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Marc R."></div><div><div class="testi-name">Marc R.</div><div class="testi-role">Fondateur, HealthTech Startup</div></div></div>
 </div>
 <div class="testi-card reveal">
 <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-<div class="testi-text">"Le ghostwriting LinkedIn a complètement changé ma visibilité. Je reçois maintenant des demandes de conférences chaque semaine."</div>
-<div class="testi-author"><div class="testi-avatar">A</div><div><div class="testi-name">Aminata D.</div><div class="testi-role">Consultante Santé Publique</div></div></div>
+<div class="testi-text">"Le ghostwriting LinkedIn a completement change ma visibilite. Je recois maintenant des demandes de conferences chaque semaine."</div>
+<div class="testi-author"><div class="testi-avatar"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&q=80" alt="Aminata D."></div><div><div class="testi-name">Aminata D.</div><div class="testi-role">Consultante Sante Publique</div></div></div>
 </div>
 <div class="testi-card reveal">
 <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-<div class="testi-text">"Notre ebook s'est vendu à 500+ exemplaires le premier mois. Amevia gère tout, de la rédaction à la mise en vente. Impressionnant."</div>
-<div class="testi-author"><div class="testi-avatar">J</div><div><div class="testi-name">Jean-Pierre L.</div><div class="testi-role">Coach en Nutrition</div></div></div>
+<div class="testi-text">"Notre ebook s'est vendu a 500+ exemplaires le premier mois. Amevia gere tout, de la redaction a la mise en vente. Impressionnant."</div>
+<div class="testi-author"><div class="testi-avatar"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80" alt="Jean-Pierre L."></div><div><div class="testi-name">Jean-Pierre L.</div><div class="testi-role">Coach en Nutrition</div></div></div>
 </div>
 <div class="testi-card reveal">
 <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-<div class="testi-text">"Les campagnes Meta Ads ont généré un ROAS de 4.5x dès le premier mois. L'équipe est réactive et les reportings sont clairs."</div>
-<div class="testi-author"><div class="testi-avatar">N</div><div><div class="testi-name">Nadia F.</div><div class="testi-role">E-commerce, Dakar</div></div></div>
+<div class="testi-text">"Les campagnes Meta Ads ont genere un ROAS de 4.5x des le premier mois. L'equipe est reactive et les reportings sont clairs."</div>
+<div class="testi-author"><div class="testi-avatar"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&q=80" alt="Nadia F."></div><div><div class="testi-name">Nadia F.</div><div class="testi-role">E-commerce, Dakar</div></div></div>
 </div>
 </div>
 </div>
@@ -606,6 +685,7 @@ footer{text-align:center;padding:32px;border-top:1px solid rgba(201,169,110,.06)
 
 <!-- [11] CONTACT -->
 <section class="section contact-section" id="contact">
+<div class="contact-bg"><img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1400&q=80" alt="" loading="lazy"></div>
 <div class="section-inner">
 <div class="reveal">
 <div class="section-label">Contact</div>
@@ -791,8 +871,16 @@ gsap.fromTo('.step',{opacity:0,y:30},{opacity:1,y:0,stagger:.15,duration:.7,ease
 });
 
 // Parallax effects
-gsap.utils.toArray('.ig-mockup,.ebook-mockup,.map-container').forEach(el=>{
-gsap.to(el,{y:-20,scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:1}});
+gsap.utils.toArray('.ig-mockup,.ebook-mockup,.map-container,.offre72-bg img,.ads-bg img,.contact-bg img').forEach(el=>{
+gsap.to(el,{y:-30,scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:1}});
+});
+
+// Portfolio scroll hint
+ScrollTrigger.create({
+trigger:'.portfolio-scroll',start:'top 80%',
+onEnter:()=>{
+gsap.fromTo('.portfolio-item',{opacity:0,x:40},{opacity:1,x:0,stagger:.1,duration:.7,ease:'power3.out'});
+}
 });
 }
 
